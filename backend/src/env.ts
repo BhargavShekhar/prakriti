@@ -3,9 +3,12 @@ import "dotenv/config";
 import z from "zod";
 
 const envSchema = z.object({
-    NODE_ENV:z.enum(["development", "deployment"]),
+    NODE_ENV:z.enum(["development", "production"]),
     PORT: z.coerce.number(),
     DATABASE_URL: z.url(),
+    GOOGLE_CLIENT_ID: z.string(),
+    GOOGLE_CLIENT_SECRET: z.string(),
+    BETTER_AUTH_URL: z.url()
 })
 
 function validateEnv() {
