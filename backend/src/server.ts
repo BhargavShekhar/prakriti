@@ -7,7 +7,7 @@ import { env } from "./env.js";
     const app = createExpressApp();
     const server = http.createServer(app);
 
-    server.listen(() => {
+    server.listen(env.PORT, () => {
         console.log(`Server started at http://localhost:${env.PORT} at ${env.NODE_ENV}`);
     })
 })()

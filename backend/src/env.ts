@@ -8,7 +8,8 @@ const envSchema = z.object({
     DATABASE_URL: z.url(),
     GOOGLE_CLIENT_ID: z.string(),
     GOOGLE_CLIENT_SECRET: z.string(),
-    BETTER_AUTH_URL: z.url()
+    BETTER_AUTH_URL: z.url(),
+    FRONTEND_URL: z.url()
 })
 
 function validateEnv() {

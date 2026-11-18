@@ -1,9 +1,23 @@
-function App() {
+import { Route, Routes } from "react-router";
+import { Dashboard } from "./features/dashboard/components/dashboard";
+import { AuthGuard } from "./features/auth/componets/auth-guard";
+import { SigninForm } from "./features/auth/componets/sign-in";
+import { SignupForm } from "./features/auth/componets/sign-up";
 
+function App() {
   return (
-    <div className="bg-red-500 text-white h-screen">
-      Hello World
-    </div>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <AuthGuard>
+            <Dashboard />
+          </AuthGuard>
+        }
+      />
+      <Route path="/sign-in" element={<SigninForm />} />
+      <Route path="/sign-up" element={<SignupForm />} />
+    </Routes>
   )
 }
 
