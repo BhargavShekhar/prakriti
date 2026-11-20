@@ -6,6 +6,7 @@ import { toNodeHandler } from "better-auth/node";
 import { auth } from "../common/db/auth.js";
 import { env } from "../env.js";
 import { globalErrorHandler } from "./global-error-handler.js";
+import { packRouter } from "../modules/packs/pack.routes.js";
 import ApiError from "../common/utils/api-error.js";
 
 import type { Express } from "express";
@@ -28,6 +29,8 @@ export function createExpressApp(): Express {
     app.get("/health", (_req, res) => res.status(200).json({
         healthy: true
     }));
+
+    app.use("/api/packs", packRouter);
 
     app.use((_req, _res, next) => {
         next(ApiError.notfound("Route not found"));
