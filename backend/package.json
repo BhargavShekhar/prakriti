@@ -9,7 +9,8 @@
     "start": "node ./dist/server.js",
     "dev": "pnpm run build && pnpm run start",
     "db:migrate": "pnpm dlx prisma@prev migrate dev",
-    "db:generate": "pnpm dlx prisma@prev generate"
+    "db:generate": "pnpm dlx prisma@prev generate",
+    "db:seed": "pnpm exec prisma db seed"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
     "@types/express": "^5.0.6",
     "@types/node": "^26.6.6",
     "prisma": "^7.10.1",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   },
   "dependencies": {
