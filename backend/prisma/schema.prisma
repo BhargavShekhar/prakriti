@@ -74,3 +74,107 @@ model Verification {
   @@index([identifier])
   @@map("verification")
 }
+
+// Eg -> Pack: Varanasi
+//       Terrains: River, Forest, Mountains
+//       Questions: q1, q2, q3
+
+model Pack {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  image       String?
+  location    String?
+  isPublished Boolean  @default(false)
+
+  terrains  PackTerrain[]
+  questions PackQuestion[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("pack")
+}
+
+model Terrain {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  image       String?
+
+  packs     PackTerrain[]
+  questions Question[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("terrain")
+}
+
+model PackTerrain {
+  id        String @id @default(cuid())
+  packId    String
+  terrainId String
+
+  pack    Pack    @relation(fields: [packId], references: [id], onDelete: Cascade)
+  terrain Terrain @relation(fields: [terrainId], references: [id], onDelete: Cascade)
+
+  @@unique([packId, terrainId])
+  @@map("pack_terrain")
+}
+
+enum QuestionType {
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  SHORT_TEXT
+}
+
+model Question {
+  id          String       @id @default(cuid())
+  text        String
+  type        QuestionType @default(MULTIPLE_CHOICE)
+  explanation String?
+  points      Int          @default(10)
+  isPublished Boolean      @default(false)
+
+  terrainId String?
+  terrain   Terrain? @relation(fields: [terrainId], references: [id], onDelete: SetNull)
+
+  options QuestionOption[]
+  packs   PackQuestion[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([terrainId])
+  @@map("question")
+}
+
+model PackQuestion {
+  id         String @id @default(cuid())
+  packId     String
+  questionId String
+  sortOrder  Int    @default(0)
+
+  pack     Pack     @relation(fields: [packId], references: [id], onDelete: Cascade)
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@unique([packId, questionId])
+  @@index([packId, sortOrder])
+  @@map("pack_question")
+}
+
+model QuestionOption {
+  id         String  @id @default(cuid())
+  questionId String
+  text       String
+  isCorrect  Boolean @default(false)
+  sortOrder  Int     @default(0)
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([questionId])
+  @@map("question_option")
+}

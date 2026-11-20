@@ -1,6 +1,5 @@
 import { Navigate } from "react-router";
 import { authClient } from "../../../lib/auth-client"
-import { DashboardLoader } from "../../dashboard/components/dashboar-loader";
 
 export function AuthGuard({ children }: {
     children: React.ReactNode
@@ -8,7 +7,7 @@ export function AuthGuard({ children }: {
     const { data: session, isPending, error } = authClient.useSession();
 
     if (isPending) {
-        return <DashboardLoader />
+        return <h1>Verifying...</h1>
     }
 
     if (error) {
