@@ -84,7 +84,7 @@ async function main() {
       id: "question-001",
       text: "Why can the same kind of plant look different in different habitats?",
       terrainId: forest.id,
-      type: "MULTIPLE_CHOICE" as const,
+      type: "MULTIPLE_CHOICE",
       points: 10,
       options: [
         { id: "option-001", text: "Different environmental conditions", isCorrect: true },
@@ -96,7 +96,7 @@ async function main() {
       id: "question-002",
       text: "What is one important role of rivers in an ecosystem?",
       terrainId: river.id,
-      type: "MULTIPLE_CHOICE" as const,
+      type: "MULTIPLE_CHOICE",
       points: 10,
       options: [
         { id: "option-004", text: "Providing water and habitats", isCorrect: true },
@@ -108,7 +108,7 @@ async function main() {
       id: "question-003",
       text: "How does altitude affect mountain vegetation?",
       terrainId: mountainTerrain.id,
-      type: "MULTIPLE_CHOICE" as const,
+      type: "MULTIPLE_CHOICE",
       points: 10,
       options: [
         { id: "option-007", text: "It can change temperature and growing conditions", isCorrect: true },

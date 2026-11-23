@@ -5,7 +5,7 @@ import { toNodeHandler } from "better-auth/node";
 
 import { auth } from "../common/db/auth.js";
 import { env } from "../env.js";
-import { globalErrorHandler } from "./global-error-handler.js";
+import { globalErrorHandler } from "./utils/global-error-handler.js";
 import { packRouter } from "../modules/packs/pack.routes.js";
 import { questionRouter } from "../modules/questions/question.routes.js";
 import ApiError from "../common/utils/api-error.js";

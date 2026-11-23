@@ -4,7 +4,7 @@ import type {
     NextFunction,
 } from "express";
 
-import ApiError from "../common/utils/api-error.js";
+import ApiError from "../../common/utils/api-error.js";
 
 export function globalErrorHandler(
     err: unknown,
