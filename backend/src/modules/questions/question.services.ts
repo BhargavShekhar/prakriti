@@ -35,7 +35,6 @@ export async function getPackQuestions({ packSlug, terrainSlug }: GetPackQuestio
                         select: {
                             id: true,
                             text: true,
-                            type: true,
                             points: true,
                             terrain: {
                                 select: {
