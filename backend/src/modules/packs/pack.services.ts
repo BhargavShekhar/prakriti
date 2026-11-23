@@ -33,3 +33,19 @@ export async function getPackBySlug(slug: string) {
         },
     });
 }
+
+export async function getPackTerrains(slug: string) {
+  return prisma.pack.findFirst({
+    where: {
+      slug,
+      isPublished: true,
+    },
+    select: {
+      terrains: {
+        select: {
+          terrain: true,
+        },
+      },
+    },
+  });
+}

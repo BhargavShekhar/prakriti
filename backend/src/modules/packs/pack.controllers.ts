@@ -1,4 +1,4 @@
-import { getAllPacks, getPackBySlug } from "./pack.services.js";
+import { getAllPacks, getPackBySlug, getPackTerrains } from "./pack.services.js";
 import ApiResponse from "../../common/utils/api-response.js";
 import ApiError from "../../common/utils/api-error.js";
 
@@ -25,4 +25,25 @@ export async function fetchPackBySlug(req: Request, res: Response) {
     }
 
     return ApiResponse.ok(res, "Packs fetched successfully", pack);
+}
+
+export async function fetchPackTerrains(req: Request, res: Response) {
+    const rawSlug = req.params.slug;
+    const slug = Array.isArray(rawSlug) ? rawSlug[0] : rawSlug;
+
+    if (!slug) {
+        return ApiError.badRequest("Slug is required to fetch pack by slug");
+    }
+
+    const pack = await getPackTerrains(slug);
+
+    if (!pack) {
+        throw ApiError.notfound("Pack not found");
+    }
+
+    const terrains = pack.terrains.map(
+        (item) => item.terrain
+    );
+
+    return ApiResponse.ok(res, "Pack terrains fetched successfully", terrains);
 }

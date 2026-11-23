@@ -7,6 +7,7 @@ import { auth } from "../common/db/auth.js";
 import { env } from "../env.js";
 import { globalErrorHandler } from "./global-error-handler.js";
 import { packRouter } from "../modules/packs/pack.routes.js";
+import { questionRouter } from "../modules/questions/question.routes.js";
 import ApiError from "../common/utils/api-error.js";
 
 import type { Express } from "express";
@@ -31,6 +32,7 @@ export function createExpressApp(): Express {
     }));
 
     app.use("/api/packs", packRouter);
+    app.use("/api/packs", questionRouter);
 
     app.use((_req, _res, next) => {
         next(ApiError.notfound("Route not found"));
