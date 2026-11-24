@@ -4,6 +4,7 @@ import { AuthGuard } from "./features/auth/componets/auth-guard";
 import { SigninForm } from "./features/auth/componets/sign-in";
 import { SignupForm } from "./features/auth/componets/sign-up";
 import { QuizPage } from "./features/quiz/pages/quiz-page";
+import { LeaderboardPage } from "./features/leaderboard/pages/leaderboard-page";
 
 function App() {
   return (
@@ -21,6 +22,14 @@ function App() {
         element={
           <AuthGuard>
             <QuizPage />
+          </AuthGuard>
+        }
+      />
+      <Route
+        path="/leaderboard"
+        element={
+          <AuthGuard>
+            <LeaderboardPage />
           </AuthGuard>
         }
       />

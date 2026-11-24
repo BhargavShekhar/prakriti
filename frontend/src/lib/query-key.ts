@@ -16,4 +16,8 @@ export const querykey = {
         mine: () => [...querykey.attempts.all, "mine"] as const,
         detail: (id: string) => [...querykey.attempts.all, id] as const,
     },
+    leaderboard: {
+        all: ["leaderboard"] as const,
+        pack: (slug: string) => [...querykey.leaderboard.all, slug] as const,
+    },
 }

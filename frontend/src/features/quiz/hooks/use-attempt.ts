@@ -57,6 +57,7 @@ export function useFinishAttempt(attemptId: string) {
         onSuccess: () => {
             qc.invalidateQueries({ queryKey: querykey.attempts.detail(attemptId) });
             qc.invalidateQueries({ queryKey: querykey.attempts.mine() });
+            qc.invalidateQueries({ queryKey: querykey.leaderboard.all });
         },
     });
 }

@@ -1,5 +1,4 @@
-import type { ComponentType } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import {
     RiBookOpenLine,
     RiCameraLine,
@@ -15,18 +14,26 @@ import { Badge } from "../../../components/ui/badge";
 import { Button } from "../../../components/ui/button";
 import { QuizSection } from "../../quiz/components/quiz-section";
 
-interface UpcomingItem {
+import type { RemixiconComponentType } from "@remixicon/react";
+
+type UpcomingItem = {
     label: string;
     description: string;
-    icon: ComponentType<{ className?: string }>;
-}
+    icon: RemixiconComponentType;
+    to?: string;
+};
 
 // Becomes real links as each feature gets built
 const upcoming: UpcomingItem[] = [
     { label: "Observe", description: "Photograph plants and animals", icon: RiCameraLine },
     { label: "Journal", description: "Your observations over time", icon: RiBookOpenLine },
     { label: "Map", description: "See where your class explored", icon: RiMapPinLine },
-    { label: "Leaderboard", description: "Top scores in your pack", icon: RiTrophyLine },
+    {
+        label: "Leaderboard",
+        description: "Top scores in your pack",
+        icon: RiTrophyLine,
+        to: "/leaderboard",
+    },
 ];
 
 export function Dashboard() {
@@ -78,23 +85,32 @@ export function Dashboard() {
                         Explore
                     </h2>
                     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                        {upcoming.map(({ label, description, icon: Icon }) => (
-                            <div
-                                key={label}
-                                className="flex flex-col gap-3 rounded-xl border border-dashed p-4 opacity-70"
-                            >
-                                <div className="flex items-center justify-between">
-                                    <span className="flex size-9 items-center justify-center rounded-full bg-primary/10 text-primary">
-                                        <Icon className="size-5" />
-                                    </span>
-                                    <Badge variant="secondary">Soon</Badge>
+                        {upcoming.map(({ label, description, icon: Icon, to }) => {
+                            const content = (
+                                <>
+                                    <div className="flex items-center justify-between">
+                                        <span className="flex size-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                                            <Icon className="size-5" />
+                                        </span>
+                                        {!to && <Badge variant="secondary">Soon</Badge>}
+                                    </div>
+                                    <div>
+                                        <p className="font-medium">{label}</p>
+                                        <p className="text-sm text-muted-foreground">{description}</p>
+                                    </div>
+                                </>
+                            );
+
+                            return to ? (
+                                <Link key={label} to={to} className="flex flex-col gap-3 rounded-xl border p-4 transition hover:bg-muted">
+                                    {content}
+                                </Link>
+                            ) : (
+                                <div key={label} className="flex flex-col gap-3 rounded-xl border border-dashed p-4 opacity-70">
+                                    {content}
                                 </div>
-                                <div>
-                                    <p className="font-medium">{label}</p>
-                                    <p className="text-sm text-muted-foreground">{description}</p>
-                                </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </section>
             </main>

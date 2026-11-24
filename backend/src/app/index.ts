@@ -9,6 +9,7 @@ import { globalErrorHandler } from "./utils/global-error-handler.js";
 import { packRouter } from "../modules/packs/pack.routes.js";
 import { questionRouter } from "../modules/questions/question.routes.js";
 import { attemptRouter } from "../modules/attempts/attempt.routes.js";
+import { leaderboardRouter } from "../modules/leaderbord/leaderboard.routes.js";
 import ApiError from "../common/utils/api-error.js";
 
 import type { Express } from "express";
@@ -35,6 +36,7 @@ export function createExpressApp(): Express {
     app.use("/api/packs", packRouter);
     app.use("/api/packs", questionRouter);
     app.use("/api", attemptRouter);
+    app.use("/api", leaderboardRouter);
 
     app.use((_req, _res, next) => {
         next(ApiError.notfound("Route not found"));
