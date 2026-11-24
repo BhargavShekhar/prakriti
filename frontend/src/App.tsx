@@ -1,8 +1,9 @@
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import { Dashboard } from "./features/dashboard/components/dashboard";
 import { AuthGuard } from "./features/auth/componets/auth-guard";
 import { SigninForm } from "./features/auth/componets/sign-in";
 import { SignupForm } from "./features/auth/componets/sign-up";
+import { QuizPage } from "./features/quiz/pages/quiz-page";
 
 function App() {
   return (
@@ -15,8 +16,17 @@ function App() {
           </AuthGuard>
         }
       />
+      <Route
+        path="/quiz/:attemptId"
+        element={
+          <AuthGuard>
+            <QuizPage />
+          </AuthGuard>
+        }
+      />
       <Route path="/sign-in" element={<SigninForm />} />
       <Route path="/sign-up" element={<SignupForm />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
 }

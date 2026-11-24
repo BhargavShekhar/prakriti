@@ -10,10 +10,10 @@ export const querykey = {
     packs: {
         all: ["packs"] as const,
         list: () => [...querykey.packs.all, "list"] as const,
-        detail: (slug: string) => [...querykey.packs.all, slug] as const,
     },
     attempts: {
         all: ["attempts"] as const,
-        result: (id: string) => [...querykey.attempts.all, id, "result"] as const,
+        mine: () => [...querykey.attempts.all, "mine"] as const,
+        detail: (id: string) => [...querykey.attempts.all, id] as const,
     },
 }
