@@ -1,15 +1,19 @@
 export const querykey = {
     auth: {
         all: ["auth"] as const,
-
         signin: () => [...querykey.auth.all, "signin"] as const,
-
         signup: () => [...querykey.auth.all, "signup"] as const,
-
-        googleSignin:  () => [...querykey.auth.all, "google-signin"] as const,
-
+        googleSignin: () => [...querykey.auth.all, "google-signin"] as const,
         signout: () => [...querykey.auth.all, "signout"] as const,
-
         singout: () => querykey.auth.signout(),
-    }
+    },
+    packs: {
+        all: ["packs"] as const,
+        list: () => [...querykey.packs.all, "list"] as const,
+        detail: (slug: string) => [...querykey.packs.all, slug] as const,
+    },
+    attempts: {
+        all: ["attempts"] as const,
+        result: (id: string) => [...querykey.attempts.all, id, "result"] as const,
+    },
 }

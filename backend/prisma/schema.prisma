@@ -111,7 +111,6 @@ model Terrain {
 
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-  quizAttempts QuizAttempt[]
 
   @@map("terrain")
 }
@@ -181,17 +180,15 @@ model QuizAttempt {
   id         String    @id @default(cuid())
   userId     String
   packId     String
-  terrainId  String?
   score      Int       @default(0)
   startedAt  DateTime  @default(now())
   finishedAt DateTime?
 
   user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   pack    Pack            @relation(fields: [packId], references: [id], onDelete: Cascade)
-  terrain Terrain?        @relation(fields: [terrainId], references: [id], onDelete: SetNull)
   answers AttemptAnswer[]
 
-  @@index([userId, packId])
+  @@unique([userId, packId])
   @@index([packId, score])
   @@map("quiz_attempt")
 }

@@ -1,43 +1,47 @@
-import { startAttempt, submitAnswer, finishAttempt } from "./attempt.services.js";
+import type { Request, Response } from "express";
+import {
+    startAttempt,
+    getAttempt,
+    submitAnswer,
+    finishAttempt,
+    getMyAttempts,
+} from "./attempt.services.js";
+
 import ApiResponse from "../../common/utils/api-response.js";
 import ApiError from "../../common/utils/api-error.js";
 
-import type { Request, Response } from "express";
+function str(value: unknown, name: string): string {
+    if (typeof value !== "string" || value.length === 0) {
+        throw ApiError.badRequest(`Invalid ${name}`);
+    }
+    return value;
+}
+
+const userIdOf = (res: Response): string => res.locals.user.id;
 
 export async function startAttemptController(req: Request, res: Response) {
-    const { slug } = req.params;
-    const terrainSlug = req.query.terrain;
+    const packSlug = str(req.params.slug, "pack slug");
 
-    if (typeof slug !== "string") {
-        throw ApiError.badRequest("Invalid pack slug");
-    }
-    if (terrainSlug !== undefined && typeof terrainSlug !== "string") {
-        throw ApiError.badRequest("Invalid terrain slug");
-    }
+    const result = await startAttempt({ userId: userIdOf(res), packSlug });
 
-    const result = await startAttempt({
-        userId: res.locals.user.id,
-        packSlug: slug,
-        ...(terrainSlug !== undefined && { terrainSlug }),
-    });
+    return ApiResponse.ok(res, "Quiz attempt ready", result);
+}
 
-    return ApiResponse.created(res, "Quiz attempt started successfully", result);
+export async function getAttemptController(req: Request, res: Response) {
+    const attemptId = str(req.params.attemptId, "attempt id");
+
+    const result = await getAttempt(userIdOf(res), attemptId);
+
+    return ApiResponse.ok(res, "Quiz attempt fetched successfully", result);
 }
 
 export async function submitAnswerController(req: Request, res: Response) {
-    const { attemptId } = req.params;
-    const { questionId, optionId } = req.body ?? {};
-
-    if (
-        typeof attemptId !== "string" ||
-        typeof questionId !== "string" ||
-        typeof optionId !== "string"
-    ) {
-        throw ApiError.badRequest("attemptId, questionId and optionId are required");
-    }
+    const attemptId = str(req.params.attemptId, "attempt id");
+    const questionId = str(req.body?.questionId, "question id");
+    const optionId = str(req.body?.optionId, "option id");
 
     const result = await submitAnswer({
-        userId: res.locals.user.id,
+        userId: userIdOf(res),
         attemptId,
         questionId,
         optionId,
@@ -47,13 +51,15 @@ export async function submitAnswerController(req: Request, res: Response) {
 }
 
 export async function finishAttemptController(req: Request, res: Response) {
-    const { attemptId } = req.params;
+    const attemptId = str(req.params.attemptId, "attempt id");
 
-    if (typeof attemptId !== "string") {
-        throw ApiError.badRequest("Invalid attempt id");
-    }
-
-    const result = await finishAttempt(res.locals.user.id, attemptId);
+    const result = await finishAttempt(userIdOf(res), attemptId);
 
     return ApiResponse.ok(res, "Quiz attempt completed successfully", result);
+}
+
+export async function getMyAttemptsController(_req: Request, res: Response) {
+    const result = await getMyAttempts(userIdOf(res));
+
+    return ApiResponse.ok(res, "Attempts fetched successfully", result);
 }
