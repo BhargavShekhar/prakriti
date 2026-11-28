@@ -23,6 +23,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
   quizAttempts  QuizAttempt[]
+  observations  Observation[]
 
   @@unique([email])
   @@map("user")
@@ -95,6 +96,7 @@ model Pack {
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   quizAttempts QuizAttempt[]
+  observations Observation[]
 
   @@map("pack")
 }
@@ -109,8 +111,8 @@ model Terrain {
   packs     PackTerrain[]
   questions Question[]
 
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("terrain")
 }
@@ -208,4 +210,31 @@ model AttemptAnswer {
 
   @@unique([attemptId, questionId])
   @@map("attempt_answer")
+}
+
+enum PhotoType {
+  WHOLE
+  CLOSE_UP
+  HABITAT
+}
+
+model Observation {
+  id         String    @id @default(cuid())
+  userId     String
+  packId     String
+  photoType  PhotoType
+  imageKey   String    @unique
+  nameGuess  String?
+  spot       String?
+  elevationM Int?
+  waterLevel String?
+  wonder     String?
+  createdAt  DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  pack Pack @relation(fields: [packId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([packId, createdAt])
+  @@map("observation")
 }

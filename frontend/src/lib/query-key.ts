@@ -20,4 +20,8 @@ export const querykey = {
         all: ["leaderboard"] as const,
         pack: (slug: string) => [...querykey.leaderboard.all, slug] as const,
     },
+    observations: {
+        all: ["observations"] as const,
+        list: (pack?: string) => [...querykey.observations.all, "list", pack ?? "all"] as const,
+    },
 }
